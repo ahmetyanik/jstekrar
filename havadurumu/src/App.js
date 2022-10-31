@@ -1,10 +1,17 @@
+import { useState } from "react";
 import "./App.css";
-import PrimarySearchAppBar from "./components/Header/Header";
+import DataStore from "./components/DataStore";
+import Main from "./components/Main/Main";
 
 function App() {
+  const [city, setCity] = useState(null);
+  const [cityInfos, setCityInfos] = useState([]);
+
   return (
     <div className="App">
-      <PrimarySearchAppBar/>
+      <DataStore.Provider value={{ city, setCity, cityInfos, setCityInfos }}>
+        <Main />
+      </DataStore.Provider>
     </div>
   );
 }

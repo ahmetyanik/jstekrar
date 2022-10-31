@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,16 +9,30 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Search } from "./HeaderStyle/searchStyle";
 import { SearchIconWrapper } from "./HeaderStyle/SearchIconWrapper";
 import { StyledInputBase } from "./HeaderStyle/StyledInputBase";
+import { useContext } from "react";
+import DataStore from "../DataStore";
 
 export default function SearchAppBar() {
-  const [city, setCity] = useState("");
+  const { city, setCity, cityInfos, setCityInfos } = useContext(DataStore);
 
   const getCityFromSearch = (e) => {
     e.preventDefault();
     setCity(e.target.value);
   };
 
-  console.log(city);
+  const getCityInfos = () => {
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${"a7ccf39f58624360e151dce17c818ef3"}`
+    )
+      .then((data) => data.json())
+      .then((data) => setCityInfos(data));
+  };
+
+  useEffect(() => {
+    getCityInfos();
+  }, [city]);
+
+  
 
   return (
     <Box sx={{ flexGrow: 1 }}>
